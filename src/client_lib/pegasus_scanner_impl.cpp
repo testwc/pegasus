@@ -173,7 +173,6 @@ void pegasus_client_impl::pegasus_scanner_impl::_next_batch()
                          dsn::message_ex *req,
                          dsn::message_ex *resp) mutable { _on_scan_response(err, req, resp); },
                   std::chrono::milliseconds(_options.timeout_ms),
-                  0,
                   _hash);
 }
 
@@ -206,7 +205,6 @@ void pegasus_client_impl::pegasus_scanner_impl::_start_scan()
             _on_scan_response(err, req, resp);
         },
         std::chrono::milliseconds(_options.timeout_ms),
-        0,
         _hash);
 }
 
@@ -277,7 +275,7 @@ pegasus_client_impl::pegasus_scanner_impl::~pegasus_scanner_impl()
 
     if (_client) {
         if (_context >= SCAN_CONTEXT_ID_VALID_MIN)
-            _client->clear_scanner(_context, 0, _hash);
+            _client->clear_scanner(_context, _hash);
         _client = nullptr;
     }
 }
